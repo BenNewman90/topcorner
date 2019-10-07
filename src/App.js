@@ -3,18 +3,27 @@ import { Switch, Route, Redirect } from 'react-router-dom';
 import {connect } from 'react-redux'
 import './App.css';
 
-import HomePage from './pages/homepage/homepage.component';
-import SignInAndSignUpPage from './pages/sign-in-and-sign-up/sign-in-and-sign-up.component';
-import Header from './components/header/header.component';
+
 import { auth, createUserProfileDocument } from './firebase/firebase.utils';
 
 import { setCurrentUser } from './redux/user/user.actions'
 
+import Header from './components/header/header.component';
+import HomePage from './pages/homepage/homepage.component';
+import SignInAndSignUpPage from './pages/sign-in-and-sign-up/sign-in-and-sign-up.component';
+import Profile from './pages/profile/profile.component';
+import EditProfile from './pages/profile-edit/profile-edit.component';
+import MyPredictions from './pages/my-predicitions/my-predicitions.component'
+import Results from './pages/results/results.component'
+
+
 class App extends React.Component {
+  
   unsubscribeFromAuth = null;
 
   componentDidMount() {
-    
+    const { setCurrentUser } = this.props;
+
     this.unsubscribeFromAuth = auth.onAuthStateChanged( async userAuth => {
       if(userAuth){
         const userRef = await createUserProfileDocument(userAuth)
@@ -29,9 +38,9 @@ class App extends React.Component {
         })
         
       }
-      setCurrentUser({ userAuth}, () => {console.log(this.state)}
-      );
+      setCurrentUser(userAuth)
     })
+
   }
 
 
@@ -56,6 +65,11 @@ class App extends React.Component {
               )
             }
           />
+          <Route exact path='/profile' component={Profile} />
+          <Route exact path='/edit-profile' component={EditProfile} />
+          <Route exact path='/my-predictions' component={MyPredictions} />
+          <Route exact path='/results' component={Results} />
+
         </Switch>
       </div>
     );

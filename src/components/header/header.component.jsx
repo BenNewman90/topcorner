@@ -1,36 +1,48 @@
 import React from 'react';
-import { Link } from 'react-router-dom';
 import { connect } from 'react-redux'
 
 import { auth } from '../../firebase/firebase.utils';
 
 import { ReactComponent as Logo } from '../../assets/football.svg';
 
-import './header.styles.scss';
+import {
+  HeaderContainer,
+  LogoContainer,
+  OptionsContainer,
+  OptionLink
+} from './header.styles';
 
 const Header = ({ currentUser }) => (
-  <div className='header'>
-    <Link className='logo-container' to='/'>
+  <HeaderContainer>
+    <LogoContainer to='/'>
       <Logo className='logo' />
-    </Link>
-    <div className='options'>
-      <Link className='option' to='/results'>
+    </LogoContainer>
+    <OptionsContainer>
+      <OptionLink to='/about'>
+        ABOUT
+      </OptionLink>
+      <OptionLink to='/results'>
         RESULTS
-      </Link>
-      <Link className='option' to='/shop'>
-        CONTACT
-      </Link>
+      </OptionLink>
+      {currentUser && (
+      <OptionLink to='/my-predictions'>
+        MY PREDICTIONS
+      </OptionLink> )}
+      {currentUser && (
+      <OptionLink to='/profile'>
+        PROFILE
+      </OptionLink> )}
       {currentUser ? (
-        <div className='option' onClick={() => auth.signOut()}>
+        <OptionLink as='div' onClick={() => auth.signOut()}>
           SIGN OUT
-        </div>
+        </OptionLink>
       ) : (
-        <Link className='option' to='/signin'>
+        <OptionLink className='option' to='/signin'>
           SIGN IN
-        </Link>
+        </OptionLink>
       )}
-    </div>
-  </div>
+    </OptionsContainer>
+  </HeaderContainer>
 );
 
 const mapStateToProps = state => ({

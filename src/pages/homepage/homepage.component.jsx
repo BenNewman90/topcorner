@@ -1,9 +1,9 @@
 import React from 'react';
 
-import './homepage.styles.scss';
+import { HomePageContainer } from './homepage.styles';
 
 const HomePage = () => (
-  <div className='homepage'>
+  <HomePageContainer>
     <p>
       Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aliquam pretium sit amet tortor eget luctus. Fusce pulvinar et lorem id tincidunt. Nulla porttitor eros ac purus laoreet, non congue nisi hendrerit. Vivamus vitae viverra ligula. Morbi ac diam nulla. Aenean tincidunt, felis eget convallis tristique, est urna tincidunt justo, in euismod odio elit a magna. Quisque pharetra, arcu in posuere sagittis, enim diam porta est, quis malesuada ligula lorem ac dui. Vivamus egestas, est in iaculis facilisis, diam eros hendrerit turpis, ut malesuada magna nibh a erat. Sed bibendum nisi est, id rutrum odio dignissim eu. In hac habitasse platea dictumst.
       </p> 
@@ -19,7 +19,7 @@ const HomePage = () => (
       <p>
       Donec varius ultricies aliquam. Nunc eu bibendum mauris. Etiam id massa sed dui dignissim sagittis. Sed porttitor mauris suscipit pellentesque blandit. Duis vel dictum nulla. Sed sit amet nulla pharetra, varius magna pulvinar, porttitor massa. Morbi eleifend ipsum enim, sollicitudin luctus risus mollis laoreet. Nam tristique, neque eu scelerisque volutpat, sem nisi eleifend ligula, a porttitor odio urna in ante. Integer imperdiet libero sed urna semper scelerisque. Donec vulputate lorem interdum, maximus arcu eu, sodales nulla. Etiam purus massa, vulputate in vestibulum quis, congue sit amet velit. Praesent et tempor neque. Donec lacinia justo ac iaculis finibus. Phasellus sed pulvinar ipsum. Quisque luctus ornare magna et ultrices.
       </p> 
-  </div>
+  </HomePageContainer>
 );
 
 export default HomePage;
