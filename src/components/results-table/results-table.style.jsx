@@ -19,9 +19,10 @@ export const TableHeader = styled.th`
 
 export const TableRow = styled.tr`
   background-color: #c3c2c2;
-  padding: 5px
+  height: 50px
 `;
 
 export const TableCell = styled.td`
   background-color: #c3c2c2;
+
 `;

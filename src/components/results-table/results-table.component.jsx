@@ -1,6 +1,6 @@
 import React from 'react';
 
-// import { auth, signInWithGoogle } from '../../firebase/firebase.utils';
+import { firestore } from '../../firebase/firebase.utils';
 
 import { Table, TableHeader, TableRow, TableCell } from './results-table.style'
 
@@ -10,12 +10,44 @@ class ResultsTable extends React.Component {
   constructor(props) {
     super(props);
 
-    this.state = state
+    this.state = {
+      "users": [],
+      "matches": []
+    }
+  }
+  componentDidMount() {
+    try {
+      let allUsers = []
+      let allMatches = []
+      firestore.collection("users").get().then(users =>{ 
+        users.forEach(user => {          
+          let userObj = user.data()
+          userObj.id = user.id         
+          allUsers.push(userObj)}
+        )
+        this.setState({
+          "users": allUsers
+        })
+      })
+      firestore.collection("matches").get().then(matches =>{ 
+        matches.forEach(match => {
+          let matchObj = match.data()
+          matchObj.id = match.id
+          allMatches.push(matchObj)
+        }
+        )
+        this.setState({
+          "matches": allMatches
+        })
+      })
+    } catch (error) {
+      console.log(error);
+    }
   }
 
     generateHeaders = (matches) =>{            
       const headerMatches = matches.map(match =>{
-        return (<TableHeader key={match.id}> {match.team_1} vs {match.team_2} </TableHeader>)
+        return (<TableHeader key={match.id}> {match.team1} vs {match.team2} </TableHeader>)
       })
       const headerNames =  (<TableHeader key = "names"> Name </TableHeader>)
       const headerPoints =  (<TableHeader key = "points"> Points </TableHeader>)
@@ -23,20 +55,18 @@ class ResultsTable extends React.Component {
       return [headerNames ,headerMatches, headerPoints]
     }
 
-    generateBody = (users) =>{
-      console.log(users);
-      
-      const generateUserPredictionCells = predictions => {
-        const userPredictions = predictions.map(prediction => {
-          return (<TableCell key={prediction.game_id}>{prediction.prediction[0]}- {prediction.prediction[1]}</TableCell>)
+    generateBody = (users) =>{      
+      const generateUserPredictionCells = user => {
+        const userPredictions = user.predictions.map(prediction => {
+          return (<TableCell key={`${user.id}${prediction.matchId}`}>{prediction.prediction[0]}- {prediction.prediction[1]}</TableCell>)
       })
       return userPredictions
       } 
       const rows = users.map(user =>{
         return (
           <TableRow key={user.id}>           
-          <TableCell>{user.name}</TableCell>
-          {generateUserPredictionCells(user.predictions)}
+          <TableCell>{user.displayName}</TableCell>
+          {generateUserPredictionCells(user)}
           <TableCell>{user.points}</TableCell>
           </TableRow>
         )
@@ -45,26 +75,26 @@ class ResultsTable extends React.Component {
       return [rows]
     }
 
-  
-
-
-  componentDidMount() { 
-  }
-
   render() {
-    return (
-      <Table >
-        <thead>
-        <TableRow>
-          {this.generateHeaders(this.state.matches)}
-        </TableRow>
-        </thead>
-        <tbody>
-          {this.generateBody(this.state.users)}
-        </tbody>
+    if(this.state.users.length === 0 || this.state.matches.length === 0){
+      return <div> Loading </div>
+    } else {
+      console.log(this.state);
+      return (
+        
+        <Table >
+          <thead>
+          <TableRow>
+            {this.generateHeaders(this.state.matches)}
+          </TableRow>
+          </thead>
+          <tbody>
+            {this.generateBody(this.state.users)}
+          </tbody>
 
-      </Table>
-    );
+        </Table>
+      );
+    }
   }
 }
 

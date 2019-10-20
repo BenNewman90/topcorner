@@ -65,9 +65,29 @@ class App extends React.Component {
               )
             }
           />
-          <Route exact path='/profile' component={Profile} />
+          <Route 
+            exact 
+            path='/profile' 
+            render={() =>
+              !this.props.currentUser ? (
+                <Redirect to='/v' />
+              ) : (
+                <Profile />
+              )
+            }
+          />
           <Route exact path='/edit-profile' component={EditProfile} />
-          <Route exact path='/my-predictions' component={MyPredictions} />
+          <Route 
+            exact 
+            path='/my-predictions'            
+            render={() =>
+              !this.props.currentUser ? (
+                <Redirect to='/' />
+              ) : (
+                <MyPredictions />
+              )
+            }
+          />
           <Route exact path='/results' component={Results} />
 
         </Switch>

@@ -3,7 +3,8 @@ import logger from 'redux-logger';
 
 import rootReducer from './root-reducer'
 
-const middleWares = [logger];
+// const middleWares = [logger];
+const middleWares = [];
 
 const store = createStore(rootReducer, applyMiddleware(...middleWares))
 
